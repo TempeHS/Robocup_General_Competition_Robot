@@ -16,6 +16,9 @@ L298N::L298N(uint8_t pinEnable, uint8_t pinIN1, uint8_t pinIN2) {
 
 void L298N::setSpeed(unsigned short pwmVal) {
   _pwmVal = pwmVal;
+  if(_pwmVal > 255) {
+    _pwmVal = 255;
+  }
 }
 
 unsigned short L298N::getSpeed() {
@@ -23,8 +26,8 @@ unsigned short L298N::getSpeed() {
 }
 
 void L298N::forward() {
-  digitalWrite(_pinIN1, HIGH);
   digitalWrite(_pinIN2, LOW);
+  digitalWrite(_pinIN1, HIGH);
 
   analogWrite(_pinEnable, _pwmVal);
 
@@ -33,8 +36,8 @@ void L298N::forward() {
 }
 
 void L298N::backward() {
-  digitalWrite(_pinIN1, LOW);
   digitalWrite(_pinIN2, LOW);
+  digitalWrite(_pinIN1, LOW);
 
   analogWrite(_pinEnable, _pwmVal);
 
@@ -43,9 +46,7 @@ void L298N::backward() {
 }
 
 void L298N::stop() {
-  digitalWrite(_pinIN1, LOW);
   digitalWrite(_pinIN2, HIGH);
-
   analogWrite(_pinEnable, 0);
 
   _direction = STOP;

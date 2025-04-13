@@ -26,7 +26,6 @@ class AIDriver{
     void rotateRight(unsigned short turnSpeed);
     void rotateLeft(unsigned short turnSpeed);
     void brake();
-    unsigned int read();
 
   private:
     L298N *motorRight;

@@ -6,7 +6,25 @@ AIDRIVER METHODS:
  - mrJonesDriving->driveForward(200,200); //Make mrJonesDriving drive forward left wheel speed 200 and right wheel speeed 200
  - mrJonesDriving->driveBackward(200,200);
  - mrJonesDriving->brake(); // Make mrJonesDriving stop instantly 
- - mrJonesDriving->read(); Returns the measurement from the ultrasonic ranger in mm
+
+LCD METHODS:
+- lcd.clear();  // Clear the screen
+- lcd.setCursor(0,0); //Set cursor (0,0) or (0,1)
+- lcd.print(""); //Print something
+
+ULTRASONIC METHODS:
+- int f = Front_HCSR04.getDistance(); // read distance in CM and save to a variable
+- int r = Right_HCSR04.getDistance(); // read distance in CM and save to a variable
+
+RGB COLOUR SENSOR METHODS:
+- float red, green, blue; // Create 3x Floats to store RGB Values
+- delay(60);  // takes 50ms to read, can be in a statemachine
+- tcs.getRGB(&red, &green, &blue); //Read sensor
+- Serial.print(int(red)); // example serial print
+
+LINE SENSORS:
+- Serial.read(A1) // Read serial value
+
 
 ARDUINO METHODS:
  - delay(1000);  // Ardunio stops processing and continues in set state for duration in milliseconds 1000 = 1 second

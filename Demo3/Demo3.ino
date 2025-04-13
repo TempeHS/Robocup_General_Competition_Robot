@@ -7,12 +7,25 @@ Date:
 
 #include "AIDriver.h"
 #include "HCSR04.h"
+#include "LiquidCrystal_I2C.h"
+#include <Wire.h>
+#include "Adafruit_TCS34725.h"
 
+byte gammatable[256];
+
+Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
+
+// Instantiate two ultrasonic sensors
 HCSR04 Front_HCSR04(4, 5);
 HCSR04 Right_HCSR04(6, 7);
 
+// Instantiate Car
 AIDriver *mrJonesDriving;  //3,8,9,11,12,13 Pins are reserved
 
+// Instantiate LCD Display
+LiquidCrystal_I2C lcd(39, 16, 2);
+
+// Variables for PID Controller
 double sensed_output, control_signal;
 double setpoint;
 double Kp; //proportional gain
@@ -24,12 +37,17 @@ double total_error, last_error;
 int max_control;
 int min_control; 
 
- 	
-void setup() {+
+const char* software_version = "00.00.01";
+
+void setup() {
   mrJonesDriving = new AIDriver();
   Serial.begin(9600);
-
-
+  lcd_setup(software_version);
+  rgb_sen_setup ();
+  delay(2000);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("BEGIN");
 }
 
 void loop() { 
@@ -39,9 +57,25 @@ void loop() {
   PID_Control(); //calls the PID function every T interval and outputs a control signal  
 
 
+  //Make mrJonesDriving drive forward left wheel speed 200 and right wheel speeed 200
+  lcd.setCursor(0,0);
+  lcd.print("Drive Backward");
+  mrJonesDriving->driveBackward(255,255);
+  delay(2000);
+  lcd.print("Drive Forward");
+    mrJonesDriving->driveForward(255,255);
+  delay(2000);
+  lcd.print("Rotate Right");
+    mrJonesDriving->rotateRight(255);
+  delay(2000);
+  lcd.print("Rotate Left");
+    mrJonesDriving->rotateLeft(255);
+  delay(2000);
+  lcd.setCursor(0,0);
+  lcd.print("BRAKING");
+  mrJonesDriving->brake();
 
-  mrJonesDriving->driveForward(255,255);
-  delay(1000);
+
 }
 
 

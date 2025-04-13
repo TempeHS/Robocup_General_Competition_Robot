@@ -23,6 +23,11 @@ AIDriver::AIDriver(){
 void AIDriver::brake(){
   motorRight->stop();
   motorLeft->stop();
+  if (motorRight->getSpeed() > motorLeft->getSpeed()) {
+    delay(motorRight->getSpeed());
+  } else {
+    delay(motorLeft->getSpeed());
+  }
 }
 
 void AIDriver::driveForward(unsigned short rightWheel, unsigned short leftWheel){
